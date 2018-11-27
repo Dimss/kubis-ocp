@@ -1,0 +1,23 @@
+apiVersion: "v1"
+kind: "DeploymentConfig"
+metadata:
+  name: "kubis-rest"
+spec:
+  template:
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: "true"
+      labels:
+        name: "kubis-rest"
+    spec:
+      containers:
+      - name: "kubis-rest"
+        image: "docker-registry.default.svc:5000/kubis/kubis-rest:0.1"
+  replicas: 1
+  triggers:
+  - type: "ConfigChange"
+  strategy:
+    type: "Rolling"
+  paused: false
+  revisionHistoryLimit: 2
+  minReadySeconds: 0
