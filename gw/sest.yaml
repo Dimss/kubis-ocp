@@ -1,0 +1,13 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: kgw
+  lables:
+    app: kubis-gw
+spec:
+  selector:
+    app: kubis-gw
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8080

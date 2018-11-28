@@ -1,0 +1,39 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: kubis-rest-0-1
+spec:
+  replicas: 1
+  template:
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: "true"
+      labels:
+        app: kubis-rest
+        version: v0-1
+    spec:
+      containers:
+      - name: kubis-rest
+        image: docker-registry.default.svc:5000/kuibs/kubis-rest:0.1
+        ports:
+        - containerPort: 8080
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: kubis-rest-0-2
+spec:
+  replicas: 1
+  template:
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: "true"
+      labels:
+        app: kubis-rest
+        version: v0-2
+    spec:
+      containers:
+      - name: kubis-rest
+        image: docker-registry.default.svc:5000/kuibs/kubis-rest:0.2
+        ports:
+        - containerPort: 8080
