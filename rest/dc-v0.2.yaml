@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: kubis-rest
-        image: "docker-registry.default.svc:5000/kuibs/kubis-rest:0.2"
+        image: "docker-registry.default.svc:5000/kubis/kubis-rest:0.2"
         ports:
         - containerPort: 8080
   replicas: 1
