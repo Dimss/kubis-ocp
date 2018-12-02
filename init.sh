@@ -10,8 +10,13 @@ oc create -f common/openjdk18-is.yaml
 # Add telepresence  
 oc create -f common/tel-dc.yaml
 
+echo "Wait 10 sec for openjdk18 IS to become in sync"
+sleep 10
+
 # Init Gateway service 
+echo "Init Gateway service"
 cd gw && ./init.sh
 
 # Init REST service
+echo "Init REST service"
 cd ../rest && ./init.sh 
