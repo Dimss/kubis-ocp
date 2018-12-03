@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kubis-gw
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kubis-gw
+  template:
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: "true"
+      labels:
+        app: kubis-gw
+        version: v0-1
+    spec:
+      containers:
+      - name: kubis-gw
+        image: "docker-registry.default.svc:5000/kubis/kubis-gw:0.1"
+        env:
+        - name: "JAVA_APP_JAR"
+          value: "kubisgw-1.0.0-SNAPSHOT-fat.jar"
+        ports:
+        - containerPort: 8080
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: kubis-gateway
+  lables:
+    app: kubis-gw
+spec:
+  selector:
+    app: kubis-gw
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8080
