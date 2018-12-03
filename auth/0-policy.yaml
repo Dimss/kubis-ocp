@@ -1,0 +1,18 @@
+apiVersion: "authentication.istio.io/v1alpha1"
+kind: "Policy"
+metadata:
+  name: "default"
+  namespace: "kubis"
+spec:
+  peers:
+---
+apiVersion: "authentication.istio.io/v1alpha1"
+kind: "Policy"
+metadata:
+  name: "secure-access"
+spec:
+  targets:
+  - name: kubis-gw
+  - name: kubis-rest
+  peers:
+  - mtls: {}

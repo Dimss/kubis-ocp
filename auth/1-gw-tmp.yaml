@@ -1,0 +1,26 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: kubis-gw
+spec:
+  host: kubis-gw
+  trafficPolicy:
+    tls:
+      mode: ISTIO_MUTUAL
+  subsets:
+  - name: 0-1
+    labels:
+      version: v0-1
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: kubis-gw
+spec:
+  hosts:
+    - kubis-gw
+  http:
+  - route:
+    - destination:
+        host: kubis-gw
+        subset: 0-1

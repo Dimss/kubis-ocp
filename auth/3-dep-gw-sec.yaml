@@ -1,12 +1,12 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: kubis-rest-insec
+  name: kubis-gw
   lables:
-    app: kubis-rest-insec
+    app: kubis-gw
 spec:
   selector:
-    app: kubis-rest-insec
+    app: kubis-gw
   ports:
   - name: http
     port: 80
@@ -15,49 +15,52 @@ spec:
 apiVersion: networking.istio.io/v1alpha3
 kind: DestinationRule
 metadata:
-  name: kubis-rest-insec
+  name: kubis-gw
 spec:
-  host: kubis-rest-insec
+  host: kubis-gw
   trafficPolicy:
     tls:
       mode: ISTIO_MUTUAL
   subsets:
-  - name: v0-3
+  - name: 0-1
     labels:
-      version: v0-3
+      version: v0-1
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
-  name: kubis-rest-insec
+  name: kubis-gw
 spec:
   hosts:
-    - kubis-rest-insec
+    - kubis-gw
   http:
   - route:
     - destination:
-        host: kubis-rest-insec
-        subset: v0-3
+        host: kubis-gw
+        subset: 0-1
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: kubis-rest-insec
+  name: kubis-gw
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: kubis-rest-insec
+      app: kubis-gw
   template:
     metadata:
       annotations:
         sidecar.istio.io/inject: "true"
       labels:
-        app: kubis-rest-insec
-        version: v0-3
+        app: kubis-gw
+        version: v0-1
     spec:
       containers:
-      - name: kubis-rest
-        image: "docker-registry.default.svc:5000/kubis/kubis-rest:0.3.5"
+      - name: kubis-gw
+        image: "docker-registry.default.svc:5000/kubis/kubis-gw:0.3"
+        env:
+        - name: "JAVA_APP_JAR"
+          value: "kubisgw-1.0.0-SNAPSHOT-fat.jar"
         ports:
         - containerPort: 8080

@@ -24,5 +24,3 @@ spec:
     - destination:
         host: kubis-rest
         subset: v0-3
-
-
