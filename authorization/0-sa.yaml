@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: kubis-gw
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: tkit

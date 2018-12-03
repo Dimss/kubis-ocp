@@ -1,0 +1,25 @@
+apiVersion: "rbac.istio.io/v1alpha1"
+kind: ServiceRole
+metadata:
+  name: kubis-viewer
+  namespace: kubis
+spec:
+  rules:
+  - services: ["*"]
+    methods: ["GET"]
+    constraints:
+    - key: "destination.labels[appGroup]"
+      values: ["kubis"]
+---
+apiVersion: "rbac.istio.io/v1alpha1"
+kind: ServiceRoleBinding
+metadata:
+  name: bind-kubis-viewer
+  namespace: kubis
+spec:
+  subjects:
+  - properties:
+      source.namespace: "kubis"
+  roleRef:
+    kind: ServiceRole
+    name: "kubis-viewer"

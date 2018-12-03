@@ -1,0 +1,22 @@
+apiVersion: "rbac.istio.io/v1alpha1"
+kind: ServiceRole
+metadata:
+  name: kubis-rest-message-writer
+  namespace: kubis
+spec:
+  rules:
+  - services: ["kubis-rest.kubis.svc.cluster.local"]
+    paths: ["/v1/system/message"]
+    methods: ["POST"]
+---
+apiVersion: "rbac.istio.io/v1alpha1"
+kind: ServiceRoleBinding
+metadata:
+  name: bind-kubis-rest-message-writer
+  namespace: kubis
+spec:
+  subjects:
+  - user: "cluster.local/ns/kubis/sa/tkit"
+  roleRef:
+    kind: ServiceRole
+    name: "kubis-rest-message-writer"

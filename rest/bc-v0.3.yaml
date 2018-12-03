@@ -16,4 +16,4 @@ spec:
   output:
     to:
       kind: "ImageStreamTag"
-      name: "kubis-rest:0.3.5"
+      name: "kubis-rest:0.3.6"
