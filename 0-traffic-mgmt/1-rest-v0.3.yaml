@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kubis-rest-0-3
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kubis-rest
+  template:
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: "true"
+      labels:
+        app: kubis-rest
+        version: v0-3
+    spec:
+      containers:
+      - name: kubis-rest
+        image: "docker-registry.default.svc:5000/kubis/kubis-rest:0.3.6"
+        ports:
+        - containerPort: 8080

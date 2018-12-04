@@ -1,0 +1,76 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: kubis-gw
+  lables:
+    app: kubis-gw
+spec:
+  selector:
+    app: kubis-gw
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8080
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: kubis-rest
+  lables:
+    app: kubis-rest
+spec:
+  selector:
+    app: kubis-rest
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kubis-gw
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kubis-gw
+  template:
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: "true"
+      labels:
+        app: kubis-gw
+        version: v0-1
+    spec:
+      containers:
+      - name: kubis-gw
+        image: "docker-registry.default.svc:5000/kubis/kubis-gw:0.4"
+        env:
+        - name: "JAVA_APP_JAR"
+          value: "kubisgw-1.0.0-SNAPSHOT-fat.jar"
+        ports:
+        - containerPort: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kubis-rest-0-3
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kubis-rest
+  template:
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: "true"
+      labels:
+        app: kubis-rest
+        version: v0-3
+    spec:
+      containers:
+      - name: kubis-rest
+        image: "docker-registry.default.svc:5000/kubis/kubis-rest:0.3.6"
+        ports:
+        - containerPort: 8080

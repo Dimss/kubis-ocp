@@ -1,33 +1,34 @@
 apiVersion: networking.istio.io/v1alpha3
 kind: DestinationRule
 metadata:
-  name: kubis-gateway
+  name: kubis-rest
 spec:
-  host: kubis-gateway
+  host: kubis-rest
   trafficPolicy:
     tls:
       mode: ISTIO_MUTUAL
   subsets:
-  - name: 0-1
+  - name: v0-1
     labels:
-      version: 0-1
-  - name: 0-1-d
+      version: v0-1
+  - name: v0-3
     labels:
-      version: 0-1-d
+      version: v0-3
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
-  name: kubis-gateway
+  name: kubis-rest
 spec:
   hosts:
-    - kubis-gateway
+    - kubis-rest
   http:
   - route:
     - destination:
-        host: kubis-gateway
-        subset: 0-1
-      weight: 100
-    mirror:
-      host: kubis-gateway 
-      subset: 0-1-d
+        host: kubis-rest
+        subset: v0-1
+      weight: 67
+    - destination:
+        host: kubis-rest
+        subset: v0-3
+      weight: 33

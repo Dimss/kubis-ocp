@@ -19,6 +19,6 @@ oc start-build kubis-gw --follow
 oc start-build kubis-rest-0.1 --follow 
 oc start-build kubis-rest-0.3 --follow 
 # Add telepresence  
-oc create -f init/7-dep-tel.yaml
+oc create -f init/7-dc-tel.yaml
 # Delete finishded build jobs 
 oc get pods | grep build  | awk '{print $1}' | xargs oc delete pod
