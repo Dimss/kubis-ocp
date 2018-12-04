@@ -94,6 +94,7 @@ spec:
       labels:
         app: tkit
         appGroup: kubis
+        version: v0-1
     spec:
       serviceAccountName: tkit
       containers:
