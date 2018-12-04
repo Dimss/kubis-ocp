@@ -5,7 +5,7 @@ metadata:
   namespace: kubis
 spec:
   rules:
-  - services: ["kubis-gw.kubis.svc.cluster.local"]
+  - services: ["kubis-gw.kubis.svc.cluster.local","kubis-rest.kubis.svc.cluster.local"]
     methods: ["POST"]
 ---
 apiVersion: "rbac.istio.io/v1alpha1"
