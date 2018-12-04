@@ -1,1 +1,1 @@
-curl -s -H "X-APP-USER: user1" http://kubis-gw/version  | jq -C .
+curl -s -H "X-APP-USER: user1" http://kubis-gw/metadata  | jq -C .
