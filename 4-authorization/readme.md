@@ -4,21 +4,21 @@ This is Istio Authorization description
 ## Play the Demo
 
 Create service accounts 
-
-`oc create -f 0-sa.yaml`
-
+```
+oc create -f 0-sa.yaml
+```
 Update SCC to allow created SAs to run with `anyuid` policy (required by Istio proxy sidecar container)
-
-`./1-css.sh`
-
+```
+./1-css.sh
+```
 Enable RBAC 
-
-`oc create -f 2-enable-rabc.yaml`
-
+```
+oc create -f 2-enable-rabc.yaml
+```
 Deploy `kubis-gw`, `kubis-rest` and `tkit`
-
-`oc create -f 3-dep-svc.yaml`
-
+```
+oc create -f 3-dep-svc.yaml
+```
 Execute request from `kubis-gw` to `kubis-rest`, the request should fail with HTTP 403 error. 
 
 Example output:
@@ -43,11 +43,15 @@ RBAC: access denied
 ```
 
 Create RBAC policy for whole namespace scope to allow read access between all services in the `kubis` namespace 
-`oc create -f 4-read-service-role.yaml`
+```
+oc create -f 4-read-service-role.yaml
+```
 
 Execute request from `kubis-gw` to `kubis-rest`, everything should works as expected. (please note, the RBAC policy may take some time to become active)
 
-`curl -s  -v  http://kubis-gw/metadata  | jq . -C`
+```
+curl -s  -v  http://kubis-gw/metadata  | jq . -C
+```
 
 Example output:
 
@@ -62,13 +66,17 @@ Example output:
 
 Execute `POST` request from `kubis-gw` to `kubis-rest` 
 
-`curl -s -H "Content-Type: application/json" -H POST --data '{"message":"first message in the queue"}' http://kubis-gw/message`
+```
+curl -s -H "Content-Type: application/json" -H POST --data '{"message":"first message in the queue"}' http://kubis-gw/message
+```
 
 The request fail with 403 error, since by default RBAC is blocking all requests except `GET` in the `kubis` namespace
 
 Create a policy to allow execution of  `POST` requests only to service account: `tkit`
 
-`oc create -f 5-write-rest-service-role.yaml`
+```
+oc create -f 5-write-rest-service-role.yaml
+```
 
 Execute request from `tkit` to `kubis-rest`, everything should works as expected
 ```
@@ -86,7 +94,9 @@ Only `tkit` service account is allowed to execute POST request to `kubis-rest`.
 
 Any other SA will be blocked by RBAC. 
 
-`curl -s -H "Content-Type: application/json" -H POST --data '{"message":"first message in the queue"}' http://kubis-gw/message`
+```
+curl -s -H "Content-Type: application/json" -H POST --data '{"message":"first message in the queue"}' http://kubis-gw/message
+```
 
 Example output:
 ```
@@ -94,12 +104,16 @@ RBAC: access denied
 ```
 Allow `kubis-gw` execute `POST` requests to `kubis-rest`, everything should works as expected
 
-`oc create -f 6-write-gw-service-role.yaml`
+```
+oc create -f 6-write-gw-service-role.yaml
+```
 
 Example output: 
 ```
 {"status":"ok"}
 ```
 ## Cleaning up 
-`./clean.sh`
+```
+./clean.sh
+```
 

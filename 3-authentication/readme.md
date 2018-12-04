@@ -24,7 +24,9 @@ oc create -f 2-rest-sec-dest-rule.yaml
 #### Execute HTTP requests
 Execute requests between services behind sidecars, everything should works as expected 
 
-`curl -s http://kubis-gw/metadata | jq -C .` 
+```
+curl -s http://kubis-gw/metadata | jq -C .
+``` 
 
 Example output: 
 ```
@@ -52,11 +54,15 @@ SEVERE: Unexpected exception in route
 ```
 
 Add `DestinationRule` for `kubis-rest-insec` to allow insecure access (clear text) to the `kubis-rest-insec` instance 
-`oc create -f 3-rest-insec-dest-rule.yaml`
+```
+oc create -f 3-rest-insec-dest-rule.yaml
+```
 
 Now, try execute request from secured `rest-gw` instance to insecure `kubis-rest-insec`, everything should works as expected. 
 
-`curl -s -H "X-APP-USER: insec" http://kubis-gw/metadata | jq -C .` 
+```
+curl -s -H "X-APP-USER: insec" http://kubis-gw/metadata | jq -C .
+``` 
 
 Example output: 
 ```
@@ -76,7 +82,9 @@ This policy is create by default when RH ServiceMesh installed with `authenticat
 ### Namespace scope policy 
 Create a policy in namespace scope which is by default doesn't uses any authentication mechanisms
 
-`oc create -f 4-ns-scope-policy.yaml`
+```
+oc create -f 4-ns-scope-policy.yaml
+```
 
 Execute request from `kubis-gw` to `kubis-rest`, the request should fail with 503 error. 
 The request is failing because `4-ns-scope-policy.yaml` instructing all services in the `kubis` namespace, 
@@ -104,7 +112,9 @@ Example output:
 
 Create a service scope policy to allow secure communication between `kubis-gw` and `kubis-rest` by overwriting Namespace scope policy.
 
-`oc create -f 5-svc-scope-policy.yaml`
+```
+oc create -f 5-svc-scope-policy.yaml
+```
 
 Execute request from `kubis-gw` to `kubis-rest`, everything should works as expected. 
 
@@ -131,4 +141,6 @@ Example output:
 ```
 
 ## Cleaning up 
-`./clean.sh`
+```
+./clean.sh
+```
