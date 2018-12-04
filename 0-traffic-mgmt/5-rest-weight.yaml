@@ -27,8 +27,8 @@ spec:
     - destination:
         host: kubis-rest
         subset: v0-1
-      weight: 67
+      weight: 90
     - destination:
         host: kubis-rest
         subset: v0-3
-      weight: 33
+      weight: 10
