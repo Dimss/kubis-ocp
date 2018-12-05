@@ -1,7 +1,6 @@
 # Authorization
-This is Istio Authorization description 
+![schema](https://raw.githubusercontent.com/Dimss/kubis-ocp/master/4-authorization/authorization.png)
 
-## Play the Demo
 
 Create service accounts 
 ```
