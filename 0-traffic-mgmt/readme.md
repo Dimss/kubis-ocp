@@ -1,5 +1,7 @@
 # Traffic management
 
+![schema](https://raw.githubusercontent.com/Dimss/kubis-ocp/master/0-traffic-mgmt/traffic-mgmt.png)
+
 Deploy `kubis-gw` and `kubis-rest-v0.1` services 
 
 ```
