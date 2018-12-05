@@ -1,5 +1,5 @@
 # Authentication 
-This is Isito authentication descritpion 
+![schema](https://raw.githubusercontent.com/Dimss/kubis-ocp/master/3-authentication/authentication.png)
 
 ## Play the demo 
 
