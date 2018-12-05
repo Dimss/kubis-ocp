@@ -1,4 +1,5 @@
 # Traffic mirroring 
+![schema](https://raw.githubusercontent.com/Dimss/kubis-ocp/master/1-traffic-mirroring/traffic-mirroring.png)
 
 Deploy `kubis-gw` and `kubis-rest` services 
 ```
