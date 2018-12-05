@@ -1,5 +1,7 @@
 # Circuit breaker
 
+![schema](https://raw.githubusercontent.com/Dimss/kubis-ocp/master/2-circuit-breaker/circuit-breaker.png)
+
 Deploy `kubis-gw` and `kubis-rest` services 
 ```
 oc create -f 0-dep-svc.yaml
