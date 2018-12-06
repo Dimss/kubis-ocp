@@ -26,15 +26,11 @@ spec:
     port: 80
     targetPort: 8080
 ---
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: "v1"
+kind: "DeploymentConfig"
 metadata:
   name: kubis-gw
 spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: kubis-gw
   template:
     metadata:
       annotations:
@@ -45,22 +41,23 @@ spec:
     spec:
       containers:
       - name: kubis-gw
-        image: "docker-registry.default.svc:5000/kubis/kubis-gw:0.4"
+        image: docker-registry.default.svc:5000/kubis/kubis-gw:0.4
         env:
         - name: "JAVA_APP_JAR"
           value: "kubisgw-1.0.0-SNAPSHOT-fat.jar"
         ports:
         - containerPort: 8080
+  replicas: 1
+  triggers:
+  - type: ConfigChange
+  strategy:
+    type: Rolling
 ---
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: "v1"
+kind: "DeploymentConfig"
 metadata:
   name: kubis-rest-0-1
 spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: kubis-rest
   template:
     metadata:
       annotations:
@@ -71,6 +68,11 @@ spec:
     spec:
       containers:
       - name: kubis-rest
-        image: "docker-registry.default.svc:5000/kubis/kubis-rest:0.1"
+        image: docker-registry.default.svc:5000/kubis/kubis-rest:0.1
         ports:
         - containerPort: 8080
+  replicas: 1
+  triggers:
+  - type: ConfigChange
+  strategy:
+    type: Rolling

@@ -1,12 +1,8 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: "v1"
+kind: "DeploymentConfig"
 metadata:
   name: kubis-gw-debug
 spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: kubis-gw
   template:
     metadata:
       annotations:
@@ -26,6 +22,11 @@ spec:
         ports:
         - containerPort: 8080
         - containerPort: 5005
+  replicas: 1
+  triggers:
+  - type: ConfigChange
+  strategy:
+    type: Rolling
 ---
 kind: Service
 apiVersion: v1

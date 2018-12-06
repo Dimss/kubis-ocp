@@ -1,12 +1,8 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: "v1"
+kind: "DeploymentConfig"
 metadata:
   name: kubis-rest-0-3
 spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: kubis-rest
   template:
     metadata:
       annotations:
@@ -17,6 +13,11 @@ spec:
     spec:
       containers:
       - name: kubis-rest
-        image: "docker-registry.default.svc:5000/kubis/kubis-rest:0.3.6"
+        image: docker-registry.default.svc:5000/kubis/kubis-rest:0.3.6
         ports:
         - containerPort: 8080
+  replicas: 1
+  triggers:
+  - type: ConfigChange
+  strategy:
+    type: Rolling

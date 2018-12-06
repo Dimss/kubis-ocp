@@ -26,15 +26,11 @@ spec:
     port: 80
     targetPort: 8080
 ---
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: "v1"
+kind: "DeploymentConfig"
 metadata:
   name: kubis-gw
 spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: kubis-gw
   template:
     metadata:
       annotations:
@@ -47,22 +43,23 @@ spec:
       serviceAccountName: kubis-gw
       containers:
       - name: kubis-gw
-        image: "docker-registry.default.svc:5000/kubis/kubis-gw:0.4"
+        image: docker-registry.default.svc:5000/kubis/kubis-gw:0.4
         env:
         - name: "JAVA_APP_JAR"
           value: "kubisgw-1.0.0-SNAPSHOT-fat.jar"
         ports:
         - containerPort: 8080
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: kubis-rest
-spec:
   replicas: 1
-  selector:
-    matchLabels:
-      app: kubis-rest
+  triggers:
+  - type: ConfigChange
+  strategy:
+    type: Rolling
+---
+apiVersion: "v1"
+kind: "DeploymentConfig"
+metadata:
+  name: kubis-rest-0-3
+spec:
   template:
     metadata:
       annotations:
@@ -74,33 +71,39 @@ spec:
     spec:
       containers:
       - name: kubis-rest
-        image: "docker-registry.default.svc:5000/kubis/kubis-rest:0.3.6"
+        image: docker-registry.default.svc:5000/kubis/kubis-rest:0.3.6
         ports:
         - containerPort: 8080
+  replicas: 1
+  triggers:
+  - type: ConfigChange
+  strategy:
+    type: Rolling
 ---
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: "v1"
+kind: "DeploymentConfig"
 metadata:
   name: tkit
 spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: tkit
   template:
     metadata:
       annotations:
         sidecar.istio.io/inject: "true"
       labels:
         app: tkit
-        appGroup: kubis
         version: v0-1
+        appGroup: kubis
     spec:
       serviceAccountName: tkit
       containers:
       - name: "tkit"
         image: "docker.io/dimssss/tkit:0.1"
         command: ["/bin/bash", "-c", "sleep 9999999"]
+  replicas: 1
+  triggers:
+  - type: ConfigChange
+  strategy:
+    type: Rolling
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: DestinationRule
