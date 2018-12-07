@@ -12,7 +12,7 @@ spec:
     spec:
       containers:
       - name: tel
-        image: datawire/telepresence-k8s:0.94
+        image: datawire/telepresence-k8s:0.95
   replicas: 1
   triggers:
   - type: ConfigChange

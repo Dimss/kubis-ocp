@@ -71,7 +71,7 @@ spec:
         image: docker-registry.default.svc:5000/kubis/kubis-rest:0.3.6
         ports:
         - containerPort: 8080
-  replicas: 1
+  replicas: 2
   triggers:
   - type: ConfigChange
   strategy:
